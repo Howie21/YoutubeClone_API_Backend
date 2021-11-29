@@ -27,6 +27,13 @@ class CommentLike(APIView):
             return Comment.objects.get(pk=pk)
         except Comment.DoesNotExist:
             raise Http404
+    
+    def patch(self, request, pk):
+        comment = self.get_object(pk)
+        serializer = CommentSerializer(comment)
+        comment.likes +=1
+        comment.save()
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 class ReplyAll(APIView):
     
