@@ -10,12 +10,26 @@ class CommentsAll(APIView):
 
     def get(self, request):
         comment = Comment.objects.all()
-        return Response(comment)
+        serializer = CommentSerializer(comment, many=True)
+        return Response(serializer.data)
     
     def post(self, request):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ReplyAll(APIView):
+    
+    def get(self, request):
+        reply = Reply.objects.all()
+        serializer = ReplySerializer(reply, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = ReplySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
