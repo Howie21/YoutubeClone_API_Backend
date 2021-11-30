@@ -21,7 +21,7 @@ class CommentsAll(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CommentLike(APIView):
+class CommentLikeDislike(APIView):
     def get_object(self, pk):
         try:
             return Comment.objects.get(pk=pk)
@@ -31,24 +31,9 @@ class CommentLike(APIView):
     def patch(self, request, pk):
         comment = self.get_object(pk)
         serializer = CommentSerializer(comment)
-        comment.likes +=1
         comment.save()
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
-class CommentDislike(APIView):
-
-    def get_object(self, pk):
-        try:
-            return Comment.objects.get(pk=pk)
-        except Comment.DoesNotExist:
-            raise Http404
-
-    def patch(self, request, pk):
-        comment = self.get_object(pk)
-        serializer = CommentSerializer(comment)
-        comment.dislikes +=1
-        comment.save()
-        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 class ReplyAll(APIView):
     
