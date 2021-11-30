@@ -10,7 +10,7 @@ class CommentSerializer(serializers.ModelSerializer):
         return Comment.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.title = validated_data.get('comment', instance.comment)
+        instance.comment = validated_data.get('comment', instance.comment)
         instance.likes = validated_data.get('likes', instance.likes)
         instance.dislikes = validated_data.get('dislikes', instance.dislikes)
         instance.video = validated_data.get('video', instance.video)
